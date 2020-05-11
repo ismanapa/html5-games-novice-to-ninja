@@ -1,0 +1,29 @@
+{
+  "name": "html5-games-novice-to-ninja",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel ./src/index.html",
+    "lint": "eslint ./src/**/*.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ismanapa/html5-games-novice-to-ninja.git"
+  },
+  "author": "ismanapa@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ismanapa/html5-games-novice-to-ninja/issues"
+  },
+  "homepage": "https://github.com/ismanapa/html5-games-novice-to-ninja#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.32.0",
+    "@typescript-eslint/parser": "^2.32.0",
+    "eslint": "^7.0.0",
+    "eslint-config-airbnb-typescript": "^7.2.1",
+    "eslint-plugin-import": "^2.20.2",
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^3.8.3"
+  }
+}
