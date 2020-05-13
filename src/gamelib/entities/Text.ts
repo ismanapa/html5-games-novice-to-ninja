@@ -2,7 +2,7 @@ import { Entity } from '~gamelib/entities/Entity';
 
 export class Text extends Entity {
   text: string;
-  style: {};
+  style: { [key: string]: any };
 
   constructor(text = '', style = {}) {
     super();
