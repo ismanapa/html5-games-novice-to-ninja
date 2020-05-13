@@ -6,6 +6,7 @@ export abstract class Entity {
   label: string;
   updateBehaviour: UpdateBehaviour;
   visible: boolean;
+  dead: boolean;
 
   constructor() {
     this.pos = { x: 0, y: 0 };

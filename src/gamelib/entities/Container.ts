@@ -19,4 +19,8 @@ export class Container extends Entity {
     this.children = this.children.filter(c => c !== child);
     return child;
   }
+
+  setChildren(children: Entity[]) {
+    this.children = children;
+  }
 }

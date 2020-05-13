@@ -90,7 +90,11 @@ function loopy(ms: number) {
     fireBullet(ship.pos.x + 24, ship.pos.y + 10);
   }
 
-  bullets.children = bullets.children.filter(bullet => bullet.pos.x < w + 20);
+  bullets.children.forEach(bullet => {
+    if (bullet.pos.x > w + 20) {
+      bullet.dead = true;
+    }
+  });
   bulletNumber.text = bullets.children.length.toString();
 
   scene.update(dt, t);

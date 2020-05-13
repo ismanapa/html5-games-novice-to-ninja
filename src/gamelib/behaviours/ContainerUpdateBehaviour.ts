@@ -3,10 +3,13 @@ import { Container } from '~gamelib/entities/Container';
 
 export class ContainerUpdateBehaviour implements UpdateBehaviour {
   update(dt: number, t: number, entity: Container): void {
-    entity.children.forEach(child => {
+    const children = entity.children.filter(child => {
       if (child.updateBehaviour || child.update) {
         child.update(dt, t);
       }
+      return !child.dead;
     });
+
+    entity.setChildren(children);
   }
 }
