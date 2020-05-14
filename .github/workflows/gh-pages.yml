@@ -14,9 +14,11 @@ jobs:
           npm install
           npm run build
 
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
         with:
-          ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: build/release # The folder the action should deploy.
+          target_branch: gh-pages
+          build_dir: build/release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }
