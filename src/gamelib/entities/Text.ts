@@ -6,6 +6,7 @@ export class Text extends Entity {
 
   constructor(text = '', style = {}) {
     super();
+    this.type = Text.name;
     this.text = text;
     this.style = style;
   }

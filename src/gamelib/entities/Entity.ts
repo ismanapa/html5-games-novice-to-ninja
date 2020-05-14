@@ -6,6 +6,7 @@ export abstract class Entity {
   label: string;
   updateBehaviour: UpdateBehaviour;
   visible: boolean;
+  type: string;
   dead: boolean;
 
   constructor() {
@@ -15,5 +16,13 @@ export abstract class Entity {
 
   update(dt: number, t: number) {
     this.updateBehaviour?.update(dt, t, this);
+  }
+
+  setPos(pos: Coordinates) {
+    this.pos = pos;
+  }
+
+  setIsDead(isDead: boolean) {
+    this.dead = isDead;
   }
 }

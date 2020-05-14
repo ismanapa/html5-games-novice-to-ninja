@@ -7,6 +7,7 @@ export class Container extends Entity {
   constructor() {
     super();
     this.children = [];
+    this.type = Container.name;
     this.updateBehaviour = new ContainerUpdateBehaviour();
   }
 

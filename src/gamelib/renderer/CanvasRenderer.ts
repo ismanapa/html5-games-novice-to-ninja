@@ -44,7 +44,7 @@ export class CanvasRenderer {
           ctx.translate(Math.round(child.pos.x), Math.round(child.pos.y));
         }
 
-        const renderer = renderes.find(r => r.entityName === child.constructor.name);
+        const renderer = renderes.find(r => r.entityName === child.type);
         if (renderer) {
           renderer.render(ctx, child);
         }

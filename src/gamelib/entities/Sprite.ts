@@ -7,5 +7,6 @@ export class Sprite extends Entity {
   constructor(texture: Texture) {
     super();
     this.texture = texture;
+    this.type = Sprite.name;
   }
 }

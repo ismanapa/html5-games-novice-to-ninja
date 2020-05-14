@@ -6,3 +6,5 @@ export * from './entities/Text';
 export * from './controls/KeyControls';
 export * from './controls/MouseControls';
 export * from './behaviours/UpdateBehaviour';
+export * from './behaviours/ContainerUpdateBehaviour';
+export * from './types/index';

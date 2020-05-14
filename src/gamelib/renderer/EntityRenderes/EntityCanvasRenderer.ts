@@ -1,4 +1,4 @@
-import { Entity } from "~gamelib/entities/Entity";
+import { Entity } from '~gamelib/entities/Entity';
 
 export abstract class EntityCanvasRenderer {
   entityName: string;

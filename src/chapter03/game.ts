@@ -1,32 +1,12 @@
 import {
-  Container, Text, CanvasRenderer, Texture, KeyControls, Sprite, UpdateBehaviour,
+  Container, Text, CanvasRenderer, Texture, KeyControls, Sprite,
 } from '~gamelib';
 
 import background from './res/images/bg.png';
-import spaceship from './res/images/spaceship.png';
 import bulletImg from './res/images/bullet.png';
-
-
-class ShipUpdateBehaviour implements UpdateBehaviour {
-  controls: KeyControls;
-  canvasSize: { w: number, h: number };
-
-  constructor(shipControls: KeyControls, canvasSize: { w: number, h: number }) {
-    this.controls = shipControls;
-    this.canvasSize = canvasSize;
-  }
-
-  update(udt: number, t: number, entity: Sprite): void {
-    const { pos } = entity;
-    pos.x += this.controls.x * udt * 200;
-    pos.y += this.controls.y * udt * 200;
-
-    if (pos.x < 0) pos.x = 0;
-    if (pos.x > this.canvasSize.w) pos.x = this.canvasSize.w;
-    if (pos.y < 0) pos.y = 0;
-    if (pos.y > this.canvasSize.h) pos.y = this.canvasSize.h;
-  }
-}
+import { Spaceship } from './spaceship';
+import { ShipUpdateBehaviour } from './SpaceshipBehaviour';
+import { Bullets } from './Bullets';
 
 // Game setup code
 const w = 640;
@@ -36,7 +16,6 @@ document.querySelector('#board').appendChild(renderer.view);
 
 const textures = {
   background: new Texture(background),
-  spaceship: new Texture(spaceship),
   bullet: new Texture(bulletImg),
 };
 
@@ -44,24 +23,13 @@ const scene = new Container();
 const controls = new KeyControls();
 
 // Make a spaceship
-const ship = new Sprite(textures.spaceship);
-ship.pos.x = 120;
-ship.pos.y = h / 2 - 16;
-ship.updateBehaviour = new ShipUpdateBehaviour(controls, { w, h });
-
+const ship = new Spaceship(
+  { x: 120, y: h / 2 - 16 },
+  new ShipUpdateBehaviour(controls, { w, h }),
+);
 
 // Bullets
-const bullets = new Container();
-
-function fireBullet(x: number, y: number) {
-  const bullet = new Sprite(textures.bullet);
-  bullet.pos.x = x;
-  bullet.pos.y = y;
-  bullet.update = function (dt) {
-    this.pos.x += 400 * dt;
-  };
-  bullets.add(bullet);
-}
+const bullets = new Bullets(w);
 
 const bulletNumber = new Text('0');
 bulletNumber.pos.x = 50;
@@ -87,14 +55,9 @@ function loopy(ms: number) {
   // ship.pos.x += Math.sin(t * 10);
   if (controls.action && t - lastShot > 0.15) {
     lastShot = t;
-    fireBullet(ship.pos.x + 24, ship.pos.y + 10);
+    bullets.addBullet({ x: ship.pos.x + 24, y: ship.pos.y + 10 });
   }
 
-  bullets.children.forEach(bullet => {
-    if (bullet.pos.x > w + 20) {
-      bullet.dead = true;
-    }
-  });
   bulletNumber.text = bullets.children.length.toString();
 
   scene.update(dt, t);
