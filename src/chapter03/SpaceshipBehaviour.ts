@@ -12,6 +12,8 @@ export class ShipUpdateBehaviour implements UpdateBehaviour {
 
   update(udt: number, t: number, entity: Spaceship): void {
     const { pos } = entity;
+    pos.x += Math.sin(t * 10);
+
     pos.x += this.controls.x * udt * 200;
     pos.y += this.controls.y * udt * 200;
 
