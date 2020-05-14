@@ -1,12 +1,13 @@
 import { Coordinates } from '~gamelib/types';
 import { UpdateBehaviour } from '~gamelib/behaviours/UpdateBehaviour';
+import { EntityType } from './EntityTypeEnum';
 
 export abstract class Entity {
   pos: Coordinates;
   label: string;
   updateBehaviour: UpdateBehaviour;
   visible: boolean;
-  type: string;
+  type: EntityType;
   dead: boolean;
 
   constructor() {
@@ -15,7 +16,9 @@ export abstract class Entity {
   }
 
   update(dt: number, t: number) {
-    this.updateBehaviour?.update(dt, t, this);
+    if (this.updateBehaviour) {
+      this.updateBehaviour.update(dt, t, this);
+    }
   }
 
   setPos(pos: Coordinates) {

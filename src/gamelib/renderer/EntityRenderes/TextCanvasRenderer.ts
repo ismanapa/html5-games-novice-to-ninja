@@ -1,10 +1,11 @@
-import { Text } from "~gamelib/entities/Text";
-import { EntityCanvasRenderer } from "./EntityCanvasRenderer";
+import { Text } from '~gamelib/entities/Text';
+import { EntityCanvasRenderer } from './EntityCanvasRenderer';
+import { EntityType } from '~gamelib/entities/EntityTypeEnum';
 
 export class TextCanvasRenderer extends EntityCanvasRenderer {
   constructor() {
     super();
-    this.entityName = Text.name;
+    this.entityName = EntityType.Text;
   }
 
   render(ctx: CanvasRenderingContext2D, entity: Text) {

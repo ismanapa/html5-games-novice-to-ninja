@@ -1,4 +1,5 @@
 import { Entity } from '~gamelib/entities/Entity';
+import { EntityType } from './EntityTypeEnum';
 
 export class Text extends Entity {
   text: string;
@@ -6,7 +7,7 @@ export class Text extends Entity {
 
   constructor(text = '', style = {}) {
     super();
-    this.type = Text.name;
+    this.type = EntityType.Text;
     this.text = text;
     this.style = style;
   }
