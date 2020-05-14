@@ -4,7 +4,7 @@ import {
 
 import background from './res/images/bg.png';
 import bulletImg from './res/images/bullet.png';
-import { Spaceship } from './spaceship';
+import { Spaceship } from './Spaceship';
 import { ShipUpdateBehaviour } from './SpaceshipBehaviour';
 import { Bullets } from './Bullets';
 import { Baddies } from './Baddies';
