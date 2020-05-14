@@ -6,7 +6,7 @@
   "scripts": {
     "start": "parcel ./src/index.html",
     "lint": "eslint ./src/**/*.ts",
-    "build": "parcel build ./src/index.html --out-dir build/release --public-url /"
+    "build": "parcel build ./src/index.html --out-dir build/release --public-url /html5-games-novice-to-ninja"
   },
   "repository": {
     "type": "git",
