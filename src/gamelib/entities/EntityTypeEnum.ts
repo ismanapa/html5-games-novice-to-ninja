@@ -2,5 +2,6 @@ export enum EntityType {
   Text,
   Sprite,
   Texture,
-  Container
+  Container,
+  TileSprite
 }
