@@ -5,7 +5,7 @@ type GameUpdateFunc = (dt: number, t: number) => void;
 const STEP = 1 / 60;
 const MAX_FRAME = STEP * 5;
 
-export default class Game {
+export class Game {
   w: number;
   h: number;
   parent: string;

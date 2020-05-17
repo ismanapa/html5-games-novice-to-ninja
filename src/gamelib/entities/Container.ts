@@ -1,5 +1,6 @@
 import { Entity } from '~gamelib/entities/Entity';
 import { ContainerUpdateBehaviour } from '~gamelib/behaviours/ContainerUpdateBehaviour';
+import { EntityType } from './EntityTypeEnum';
 
 export class Container extends Entity {
   children: Entity[];
@@ -7,7 +8,7 @@ export class Container extends Entity {
   constructor() {
     super();
     this.children = [];
-    this.type = Container.name;
+    this.type = EntityType.Container;
     this.updateBehaviour = new ContainerUpdateBehaviour();
   }
 
@@ -23,5 +24,9 @@ export class Container extends Entity {
 
   setChildren(children: Entity[]) {
     this.children = children;
+  }
+
+  map(f: (entity: Entity) => void) {
+    return this.children.map(f);
   }
 }

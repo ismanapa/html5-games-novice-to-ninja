@@ -9,3 +9,4 @@ export * from './behaviours/UpdateBehaviour';
 export * from './behaviours/ContainerUpdateBehaviour';
 export * from './types/index';
 export * from './game';
+export * from './utils/math';
