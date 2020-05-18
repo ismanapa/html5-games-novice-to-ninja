@@ -9,6 +9,8 @@ export abstract class Entity {
   visible: boolean;
   type: EntityType;
   dead: boolean;
+  w: number;
+  h: number;
 
   constructor() {
     this.pos = { x: 0, y: 0 };

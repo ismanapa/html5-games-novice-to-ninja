@@ -1,4 +1,6 @@
-import { TileMap, Texture, math } from '~gamelib';
+import {
+  TileMap, Texture, math, Coordinates, TileSprite,
+} from '~gamelib';
 
 import tile from './res/images/tiles.png';
 
@@ -6,6 +8,9 @@ const texture = new Texture(tile);
 
 export class Level extends TileMap {
   bounds: { left: number; right: number; top: number; bottom: number; };
+  blank: Coordinates;
+  lastTile: TileSprite;
+  totalFreeSpots: number;
 
   constructor(w: number, h: number) {
     const tileSize = 32;
@@ -13,6 +18,7 @@ export class Level extends TileMap {
     const mapH = Math.ceil(h / tileSize);
 
     const level = [];
+    let totalFreeSpots = 0;
     for (let i = 0; i < mapW * mapH; i++) {
       const isTopOrBottom = i < mapW || Math.floor(i / mapW) === mapH - 1;
       const isLeft = i % mapW === 0;
@@ -30,6 +36,7 @@ export class Level extends TileMap {
       } else {
         // Random ground tile
         level.push({ x: math.rand(1, 5), y: 0 });
+        totalFreeSpots++;
       }
     }
 
@@ -41,5 +48,23 @@ export class Level extends TileMap {
       top: tileSize,
       bottom: h - tileSize * 2,
     };
+
+    this.blank = { x: 0, y: 0 };
+    this.lastTile = null;
+    this.totalFreeSpots = totalFreeSpots;
+  }
+
+  checkGround(pos: Coordinates) {
+    const { blank, lastTile } = this;
+    const currentTile = this.tileAtPixelPos(pos);
+    if (lastTile === currentTile) {
+      return 'checked';
+    }
+    this.lastTile = tile;
+    if (tile.frame !== blank) {
+      this.setFrameAtPixelPos(pos, blank);
+      return 'solid';
+    }
+    return 'cleared';
   }
 }

@@ -10,6 +10,7 @@ export class TileMap extends Container {
   tileH: number;
   w: number;
   h: number;
+  children: TileSprite[];
 
   constructor(
     tiles: Coordinates[],
@@ -36,5 +37,40 @@ export class TileMap extends Container {
       s.pos.y = Math.floor(i / mapW) * tileH;
       return s;
     });
+  }
+
+
+  pixelToMapPos(pos: Coordinates) {
+    const { tileW, tileH } = this;
+    return {
+      x: Math.floor(pos.x / tileW),
+      y: Math.floor(pos.y / tileH),
+    };
+  }
+
+  mapToPixelPos(mapPos: Coordinates) {
+    const { tileW, tileH } = this;
+    return {
+      x: mapPos.x * tileW,
+      y: mapPos.y * tileH,
+    };
+  }
+
+  tileAtMapPos(mapPos: Coordinates) {
+    return this.children[mapPos.y * this.mapW + mapPos.x];
+  }
+
+  tileAtPixelPos(pos: Coordinates) {
+    return this.tileAtMapPos(this.pixelToMapPos(pos));
+  }
+
+  setFrameAtMapPos(mapPos: Coordinates, frame: Coordinates) {
+    const tile = this.tileAtMapPos(mapPos);
+    tile.frame = frame;
+    return tile;
+  }
+
+  setFrameAtPixelPos(pos: Coordinates, frame: Coordinates) {
+    return this.setFrameAtMapPos(this.pixelToMapPos(pos), frame);
   }
 }

@@ -2,6 +2,7 @@ import {
   Game,
   KeyControls,
   math,
+  entity,
 } from '~gamelib';
 import { Level } from './Level';
 import { Squizz } from './entities/Squizz';
@@ -28,4 +29,7 @@ game.run(() => {
   // Confine the player pos to bounds area
   pos.x = math.clamp(pos.x, left, right);
   pos.y = math.clamp(pos.y, top, bottom);
+
+  const ground = level.checkGround(entity.center(squizz));
+  console.log(ground);
 });
