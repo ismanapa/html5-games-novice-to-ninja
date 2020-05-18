@@ -1,7 +1,10 @@
 import { Coordinates } from './types';
 import { TileSprite } from './entities/TileSprite';
+import { Entity } from './entities/Entity';
+import { AnimManagerBehaviour } from './behaviours/AnimManagerBehaviour';
+import { AnimBehaviour } from './behaviours/AnimBehaviour';
 
-class Anim {
+export class Anim extends Entity {
   frames: Coordinates[];
   rate: number;
   frame: Coordinates;
@@ -9,8 +12,10 @@ class Anim {
   curTime: number;
 
   constructor(frames: Coordinates[], rate: number) {
+    super();
     this.frames = frames;
     this.rate = rate;
+    this.updateBehaviour = new AnimBehaviour();
     this.reset();
   }
 
@@ -19,47 +24,27 @@ class Anim {
     this.curFrame = 0;
     this.curTime = 0;
   }
-
-  update(dt: number) {
-    const { rate, frames } = this;
-    this.curTime += dt;
-    if (this.curTime > rate) {
-      this.curFrame++;
-      this.frame = frames[this.curFrame % frames.length];
-      this.curTime -= rate;
-    }
-  }
 }
 
-export class AnimManager {
+export class AnimManager extends Entity {
   anims: { [key: string]: Anim };
   running: boolean;
   frameSource: Coordinates;
   current: string;
 
   constructor(e: TileSprite) {
+    super();
     this.anims = {};
     this.running = false;
     this.frameSource = e.frame;
     this.current = null;
+
+    this.updateBehaviour = new AnimManagerBehaviour();
   }
 
   add(name: string, frames: Coordinates[], speed: number) {
     this.anims[name] = new Anim(frames, speed);
     return this.anims[name];
-  }
-
-  update(dt: number) {
-    const { current, anims, frameSource } = this;
-    if (!current) {
-      return;
-    }
-    const anim = anims[current];
-    anim.update(dt);
-
-    // Sync the tileSprite frame
-    frameSource.x = anim.frame.x;
-    frameSource.y = anim.frame.y;
   }
 
   play(anim: string) {

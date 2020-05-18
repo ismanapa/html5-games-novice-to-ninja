@@ -24,10 +24,6 @@ export class TileSprite extends Sprite {
     this.frame = frame;
   }
 
-  update(dt: number) {
-    this.anims.update(dt);
-  }
-
   get w() {
     return this.tileW * Math.abs(this.scale.x);
   }

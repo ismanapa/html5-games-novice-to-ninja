@@ -20,10 +20,13 @@ const distance = (a: Coordinates, b: Coordinates): number => {
   return Math.sqrt(dx * dx + dy * dy);
 };
 
+const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(x, max));
+
 export const math = {
   randf,
   rand,
   randOneFrom,
   randOneIn,
   distance,
+  clamp,
 };

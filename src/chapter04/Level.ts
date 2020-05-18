@@ -5,6 +5,8 @@ import tile from './res/images/tiles.png';
 const texture = new Texture(tile);
 
 export class Level extends TileMap {
+  bounds: { left: number; right: number; top: number; bottom: number; };
+
   constructor(w: number, h: number) {
     const tileSize = 32;
     const mapW = Math.ceil(w / tileSize);
@@ -32,5 +34,12 @@ export class Level extends TileMap {
     }
 
     super(level, mapW, mapH, tileSize, tileSize, texture);
+
+    this.bounds = {
+      left: tileSize,
+      right: w - tileSize * 2,
+      top: tileSize,
+      bottom: h - tileSize * 2,
+    };
   }
 }
