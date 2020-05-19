@@ -3,6 +3,7 @@ import {
   KeyControls,
   math,
   entity,
+  Camera,
 } from '~gamelib';
 import { Level } from './Level';
 import { Squizz } from './entities/Squizz';
@@ -12,11 +13,14 @@ const { scene, w, h } = game;
 
 const controls = new KeyControls();
 const squizz = new Squizz(controls);
+const level = new Level(w * 2, h * 2);
+squizz.pos = { x: level.w / 2, y: level.h / 2 };
+const camera = new Camera(squizz, { w, h }, { w: level.w, h: level.h });
 
-const level = new Level(w, h);
+scene.add(camera);
 
-scene.add(level);
-scene.add(squizz);
+camera.add(level);
+camera.add(squizz);
 
 game.run(() => {
   const { pos } = squizz;

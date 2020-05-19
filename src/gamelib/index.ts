@@ -13,3 +13,4 @@ export * from './utils/math';
 export * from './utils/entity';
 export * from './entities/TileMap';
 export * from './entities/TileSprite';
+export * from './entities/Camera';
