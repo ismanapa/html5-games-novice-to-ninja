@@ -60,8 +60,8 @@ export class Level extends TileMap {
     if (lastTile === currentTile) {
       return 'checked';
     }
-    this.lastTile = tile;
-    if (tile.frame !== blank) {
+    this.lastTile = currentTile;
+    if (currentTile.frame !== blank) {
       this.setFrameAtPixelPos(pos, blank);
       return 'solid';
     }
