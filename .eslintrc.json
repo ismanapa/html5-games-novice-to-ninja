@@ -19,6 +19,7 @@
     "no-plusplus": 0,
     "no-mixed-operators": 0,
     "no-bitwise": 0,
-    "no-shadow": 0
+    "no-shadow": 0,
+    "@typescript-eslint/no-use-before-define": 0
   }
 }

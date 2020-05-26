@@ -2,8 +2,8 @@ import {
   Container, Camera, Game, KeyControls,
 } from '~gamelib';
 import { Level } from '~chapter04/Level';
-import { Squizz } from './Squizz';
-import { Baddie } from './Baddie';
+import { Squizz } from '../entities/Squizz';
+import { Baddie } from '../entities/Baddie';
 import { GameScreenBehaviour } from './GameScreenBehaviour';
 
 export class GameScreen extends Container {

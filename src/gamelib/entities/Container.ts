@@ -12,7 +12,7 @@ export class Container extends Entity {
     this.updateBehaviour = new ContainerUpdateBehaviour();
   }
 
-  add(child: Entity) {
+  add<T extends Entity>(child: T): T {
     this.children.push(child);
     return child;
   }

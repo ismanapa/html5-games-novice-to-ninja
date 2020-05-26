@@ -2,7 +2,7 @@ import {
   UpdateBehaviour, ContainerUpdateBehaviour, entity as entityHelpers, math,
 } from '~gamelib';
 import { GameScreen } from './GameScreen';
-import { Baddie } from './Baddie';
+import { Baddie } from '../entities/Baddie';
 
 export class GameScreenBehaviour extends ContainerUpdateBehaviour implements UpdateBehaviour {
   update(dt: number, t: number, entity: GameScreen): void {

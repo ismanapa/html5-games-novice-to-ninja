@@ -4,20 +4,22 @@ type KeysState = { [key: string]: boolean; };
 export class KeyControls {
   keys: KeysState;
 
-  constructor() {
+  constructor(enabled = true) {
     this.keys = {};
 
-    // Bind event handlers
-    document.addEventListener('keydown', e => {
-      if ([37, 38, 39, 40, 32].indexOf(e.which) >= 0) {
-        e.preventDefault();
-      }
-      this.keys[e.which] = true;
-    }, false);
+    if (enabled) {
+      // Bind event handlers
+      document.addEventListener('keydown', e => {
+        if ([37, 38, 39, 40, 32].indexOf(e.which) >= 0) {
+          e.preventDefault();
+        }
+        this.keys[e.which] = true;
+      }, false);
 
-    document.addEventListener('keyup', e => {
-      this.keys[e.which] = false;
-    }, false);
+      document.addEventListener('keyup', e => {
+        this.keys[e.which] = false;
+      }, false);
+    }
   }
 
   key(key: string, value: boolean) {
