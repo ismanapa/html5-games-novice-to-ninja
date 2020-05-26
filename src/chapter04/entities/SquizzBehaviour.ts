@@ -7,7 +7,7 @@ export class SquizzBehaviour extends TileSpriteBehaviour implements UpdateBehavi
     super.update(dt, t, entity);
 
     const {
-      pos, controls, speed, dir,
+      pos, controls, speed, dir, minSpeed,
     } = entity;
     super.update(dt, t, entity);
 
@@ -24,6 +24,11 @@ export class SquizzBehaviour extends TileSpriteBehaviour implements UpdateBehavi
         dir.y = y;
         pos.x = Math.round(pos.x / 32) * 32;
       }
+    }
+
+    // Speed adjustments
+    if (entity.speed > minSpeed) {
+      entity.speed -= dt;
     }
 
     pos.x += dir.x * dt * (32 / speed);

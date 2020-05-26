@@ -2,8 +2,8 @@ import {
   Container, Game, KeyControls, Coordinates, Text, ContainerUpdateBehaviour, UpdateBehaviour,
 } from '~gamelib';
 
-import { Level } from '~chapter04/Level';
-import { Squizz } from '~chapter04/entities/Squizz';
+import { Level } from '../Level';
+import { Squizz } from '../entities/Squizz';
 
 export class TitleScreen extends Container {
   onStart: () => void;
@@ -51,5 +51,4 @@ class TitleScreenBehaviour extends ContainerUpdateBehaviour implements UpdateBeh
       entity.onStart();
     }
   }
-}
 }

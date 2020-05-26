@@ -4,19 +4,23 @@ import {
 import { GameScreen } from './GameScreen';
 import { Baddie } from '../entities/Baddie';
 
+const SCORE_PELLET = 8;
+
 export class GameScreenBehaviour extends ContainerUpdateBehaviour implements UpdateBehaviour {
   update(dt: number, t: number, entity: GameScreen): void {
     super.update(dt, t, entity);
-    const { squizz, level } = entity;
+    const { squizz, level, stats } = entity;
 
     // Make this game harder the longer you play
-    squizz.speed -= 0.003 * dt;
+    squizz.minSpeed -= 0.005 * dt;
+    squizz.speed -= 0.004 * dt;
+
 
     entity.baddies.children.forEach((b: Baddie) => {
       const { pos } = b;
       if (entityHelpers.distance(squizz, b) < 32) {
         // A hit!
-        squizz.dead = true;
+        entity.loseLife();
 
         // Send off screen for a bit
         if (b.xSpeed) pos.x = -level.w;
@@ -40,8 +44,14 @@ export class GameScreenBehaviour extends ContainerUpdateBehaviour implements Upd
 
     // See if we're on new ground
     const ground = level.checkGround(entityHelpers.center(squizz));
-    if (ground === 'cleared') {
-      squizz.dead = true;
+    if (ground === 'solid') {
+      stats.pellets++;
+      entity.addScore(SCORE_PELLET);
     }
+    if (ground === 'cleared' && !squizz.isPoweredUp) {
+      entity.loseLife();
+    }
+
+    level.blank.y = squizz.isPoweredUp && ((t / 100) % 2) | 0 ? 1 : 0;
   }
 }
