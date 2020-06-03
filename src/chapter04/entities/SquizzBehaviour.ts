@@ -1,5 +1,5 @@
 import { UpdateBehaviour } from '~gamelib';
-import { Squizz } from './Squizz';
+import { Squizz, SquizzAnimations } from './Squizz';
 import { TileSpriteBehaviour } from '~gamelib/behaviours/TileSpriteBehaviour';
 
 export class SquizzBehaviour extends TileSpriteBehaviour implements UpdateBehaviour {
@@ -7,9 +7,9 @@ export class SquizzBehaviour extends TileSpriteBehaviour implements UpdateBehavi
     super.update(dt, t, entity);
 
     const {
-      pos, controls, speed, dir, minSpeed,
+      pos, controls, dir, minSpeed, anims,
     } = entity;
-    super.update(dt, t, entity);
+    let { speed } = entity;
 
     entity.nextCell -= dt;
     if (entity.nextCell <= 0) {
@@ -31,7 +31,24 @@ export class SquizzBehaviour extends TileSpriteBehaviour implements UpdateBehavi
       entity.speed -= dt;
     }
 
+    if ((entity.fastTime -= dt) > 0) {
+      speed /= 1.33;
+    }
+
     pos.x += dir.x * dt * (32 / speed);
     pos.y += dir.y * dt * (32 / speed);
+
+    // Powerball blink mode!
+    entity.visible = true;
+    if (entity.powerupTime > 0) {
+      const time = entity.powerupTime -= dt;
+      // Blink when nearly done
+      if (time < 1.5) {
+        entity.visible = !!(t / 0.1 % 2 | 0);
+      }
+      if (time < 0) {
+        anims.play(SquizzAnimations.walk);
+      }
+    }
   }
 }

@@ -1,18 +1,26 @@
 import {
-  Container, Camera, Game, KeyControls, Text, TileSprite, Texture,
+  Container, Camera, Game, KeyControls, Text, TileSprite, Texture, Coordinates, math,
 } from '~gamelib';
-import { Level } from '~chapter04/Level';
+
+import { Level } from '../Level';
 import { Squizz } from '../entities/Squizz';
 import { Baddie } from '../entities/Baddie';
+import { Cloud } from '../entities/Cloud';
+import { Pickup, PickupTypes } from '../entities/Pickup';
 import { GameScreenBehaviour } from './GameScreenBehaviour';
+import { Jackpot } from '../entities/Jackpot';
 
 import SquizzTexture from '../res/images/player-walk.png';
+import JackpotsTexture from '../res/images/jackpots.png';
 
 const textures = {
+  jackpots: new Texture(JackpotsTexture),
   squizz: new Texture(SquizzTexture),
 };
 
-export type GameStats = { pellets: number; maxPellets: number; lives: number; score: number; };
+export type GameStats = {
+  pellets: number; maxPellets: number; lives: number; score: number; lettersHave: string;
+};
 
 export class GameScreen extends Container {
   baddies: Container;
@@ -23,6 +31,9 @@ export class GameScreen extends Container {
   stats: GameStats;
   livesIcons: TileSprite[];
   gameOver: (stast: GameStats) => void;
+  pickups: Container;
+  lastPickupAt: number;
+  letters: TileSprite[];
 
   constructor(game: Game, controls: KeyControls, gameOver: (stast: GameStats) => void) {
     super();
@@ -40,19 +51,29 @@ export class GameScreen extends Container {
       ),
     ) as Camera;
 
+    // Add roaming baddies
     this.baddies = this.addBaddies(level);
 
+    // Refueling power-ups
+    this.pickups = new Container();
+    this.lastPickupAt = 0;
+
     camera.add(level);
+    camera.add(this.pickups);
     camera.add(this.baddies);
     camera.add(squizz);
 
+    // Add static graphic elements
+
     this.gui = this.createGUI(game);
+    this.letters = this.createBonusLetters();
 
     this.stats = {
       pellets: 0,
       maxPellets: level.totalFreeSpots,
       lives: 3,
       score: 0,
+      lettersHave: '',
     };
 
     this.updateLivesIcons();
@@ -101,6 +122,17 @@ export class GameScreen extends Container {
     };
   }
 
+  createBonusLetters() {
+    return Jackpot.BONUS_WORD.split('').map((ch, i) => {
+      const letter = this.add(new TileSprite(textures.jackpots, 32, 32));
+      letter.frame.x = i;
+      letter.pos = { x: 10, y: i * 32 + 128 };
+      letter.scale = { x: 0.75, y: 0.75 };
+      letter.visible = false;
+      return letter;
+    });
+  }
+
   updateLivesIcons() {
     this.livesIcons.forEach((icon, i) => {
       icon.visible = i < this.stats.lives - 1;
@@ -120,11 +152,52 @@ export class GameScreen extends Container {
     const { squizz, stats } = this;
 
     squizz.reset();
+    this.addCloud(squizz.pos);
 
     stats.lives--;
     if (stats.lives === 0) {
       this.gameOver(stats);
     }
     this.updateLivesIcons();
+  }
+
+  addCloud(pos: Coordinates) {
+    const { camera } = this;
+    camera.add(new Cloud(pos));
+  }
+
+  addPickup() {
+    const { stats, level, pickups } = this;
+    const pickup = math.randOneFrom(Pickup.pickups);
+    const p = pickups.add(new Pickup(pickup));
+    if (pickup === PickupTypes.death) {
+      // One less cell that user can possibly fill
+      stats.maxPellets--;
+      p.life *= 3; // death stays for a long time.
+    }
+    p.pos = level.getRandomPos();
+  }
+
+  addBonusLetter() {
+    const { level, pickups } = this;
+    const p = pickups.add(new Jackpot());
+    p.pos = level.getRandomPos();
+  }
+
+  pickupBonusLetter(letter: string) {
+    const { stats, letters } = this;
+    if (stats.lettersHave.indexOf(letter) !== -1) {
+      // Already have this letter
+      return;
+    }
+    stats.lettersHave += letter;
+    letters[Jackpot.BONUS_WORD.indexOf(letter)].visible = true;
+    if (stats.lettersHave.length === Jackpot.BONUS_WORD.length) {
+      // FREE LIFE!
+      stats.lives += 1;
+      stats.lettersHave = '';
+      letters.forEach(l => (l.visible = false));
+      this.updateLivesIcons();
+    }
   }
 }

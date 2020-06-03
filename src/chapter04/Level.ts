@@ -67,4 +67,28 @@ export class Level extends TileMap {
     }
     return 'cleared';
   }
+
+  getRandomPos() {
+    const {
+      w, h, blank, bounds,
+    } = this;
+    let found = false;
+    let x;
+    let y;
+
+    while (!found) {
+      x = math.rand(w);
+      y = math.rand(h);
+      const isCleared = this.tileAtPixelPos({ x, y }).frame === blank;
+      const inBounds = x > bounds.left
+        && x < bounds.right
+        && y > bounds.top
+        && y < bounds.bottom;
+
+      if (inBounds && !isCleared) {
+        found = true;
+      }
+    }
+    return this.mapToPixelPos(this.pixelToMapPos({ x, y }));
+  }
 }
