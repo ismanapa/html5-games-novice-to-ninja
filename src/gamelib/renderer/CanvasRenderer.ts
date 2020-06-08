@@ -1,6 +1,10 @@
 import { Container } from '~gamelib/entities/Container';
 import {
-  TextCanvasRenderer, SpriteCanvasRenderer, EntityCanvasRenderer, TileSpriteCanvasRenderer,
+  TextCanvasRenderer,
+  SpriteCanvasRenderer,
+  EntityCanvasRenderer,
+  TileSpriteCanvasRenderer,
+  RectCanvasRenderer,
 } from './EntityRenderes';
 
 export class CanvasRenderer {
@@ -25,6 +29,7 @@ export class CanvasRenderer {
       new TextCanvasRenderer(),
       new SpriteCanvasRenderer(),
       new TileSpriteCanvasRenderer(),
+      new RectCanvasRenderer(),
     ];
   }
 

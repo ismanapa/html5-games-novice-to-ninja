@@ -1,4 +1,4 @@
-import { Coordinates } from '~gamelib/types';
+import { Coordinates, HitBox } from '~gamelib/types';
 import { UpdateBehaviour } from '~gamelib/behaviours/UpdateBehaviour';
 import { EntityType } from './EntityTypeEnum';
 
@@ -11,6 +11,7 @@ export abstract class Entity {
   dead: boolean;
   w: number;
   h: number;
+  hitBox: HitBox;
 
   constructor() {
     this.pos = { x: 0, y: 0 };

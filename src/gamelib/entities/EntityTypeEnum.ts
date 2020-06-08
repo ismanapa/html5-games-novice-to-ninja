@@ -3,5 +3,6 @@ export enum EntityType {
   Sprite,
   Texture,
   Container,
-  TileSprite
+  TileSprite,
+  Rect,
 }
