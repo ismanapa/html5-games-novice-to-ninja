@@ -1,4 +1,4 @@
-import { UpdateBehaviour } from '~gamelib';
+import { UpdateBehaviour, deadInTracks } from '~gamelib';
 import { Player } from './Player';
 
 export class PlayerBehaviour implements UpdateBehaviour {
@@ -8,8 +8,13 @@ export class PlayerBehaviour implements UpdateBehaviour {
     const { x, y } = controls;
     const xo = x * dt * speed;
     const yo = y * dt * speed;
-    pos.x += xo;
-    pos.y += yo;
+    const r = deadInTracks(entity, entity.map, xo, yo);
+    if (r.x !== 0 && r.y !== 0) {
+      r.x /= Math.sqrt(2);
+      r.y /= Math.sqrt(2);
+    }
+    pos.x += r.x;
+    pos.y += r.y;
 
     // Animate!
     if (xo || yo) {

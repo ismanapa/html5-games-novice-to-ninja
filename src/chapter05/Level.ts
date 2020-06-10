@@ -4,17 +4,19 @@ import tiles from './res/images/bravedigger-tiles.png';
 
 const texture = new Texture(tiles);
 
+const tileIndexes = [
+  {
+    id: 'empty', x: 1, y: 2, walkable: true,
+  },
+  { id: 'wall', x: 2, y: 2 },
+  { id: 'wall_end', x: 3, y: 2 },
+];
+
 export class Level extends TileMap {
   constructor(w: number, h: number) {
     const tileSize = 48;
     const mapW = Math.floor(w / tileSize);
     const mapH = Math.floor(h / tileSize);
-
-    const tileIndexes = [
-      { id: 'empty', x: 1, y: 2 },
-      { id: 'wall', x: 2, y: 2 },
-      { id: 'wall_end', x: 3, y: 2 },
-    ];
 
     const getTile = (id: string) => tileIndexes.find(t => t.id === id);
     const getIdx = (id: string) => tileIndexes.indexOf(getTile(id));

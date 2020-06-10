@@ -1,4 +1,4 @@
-export type Coordinates = { x: number, y: number };
+export type Coordinates = { x: number, y: number, [key: string]: any };
 
 export type Dimensions = { w: number, h: number };
 

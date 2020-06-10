@@ -12,7 +12,7 @@ export class GameScreen extends Container {
     this.w = game.w;
     this.h = game.h;
     const map = new Level(game.w, game.h);
-    const player = new Player(controls);
+    const player = new Player(controls, map);
     player.pos.x = 48;
     player.pos.y = 48;
 

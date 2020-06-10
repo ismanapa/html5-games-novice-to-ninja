@@ -14,3 +14,4 @@ export * from './utils/entity';
 export * from './entities/TileMap';
 export * from './entities/TileSprite';
 export * from './entities/Camera';
+export * from './movement/deadInTracks';
