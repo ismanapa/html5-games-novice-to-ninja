@@ -1,4 +1,4 @@
-import { UpdateBehaviour, deadInTracks } from '~gamelib';
+import { UpdateBehaviour, wallSlide } from '~gamelib';
 import { Player } from './Player';
 
 export class PlayerBehaviour implements UpdateBehaviour {
@@ -8,7 +8,7 @@ export class PlayerBehaviour implements UpdateBehaviour {
     const { x, y } = controls;
     const xo = x * dt * speed;
     const yo = y * dt * speed;
-    const r = deadInTracks(entity, entity.map, xo, yo);
+    const r = wallSlide(entity, entity.map, xo, yo);
     if (r.x !== 0 && r.y !== 0) {
       r.x /= Math.sqrt(2);
       r.y /= Math.sqrt(2);
