@@ -66,4 +66,20 @@ export class Level extends TileMap {
       texture,
     );
   }
+
+  findFreeSpot() {
+    const { mapW, mapH } = this;
+    let found = false;
+    let x;
+    let y;
+    while (!found) {
+      x = math.rand(mapW);
+      y = math.rand(mapH);
+      const { frame } = this.tileAtMapPos({ x, y });
+      if (frame.walkable) {
+        found = true;
+      }
+    }
+    return this.mapToPixelPos({ x, y });
+  }
 }
