@@ -4,6 +4,7 @@ import { entity } from '../utils/entity';
 
 export const wallSlide = (ent: Entity, map: TileMap, x = 0, y = 0) => {
   let tiles;
+  let tileEdge;
   const bounds = entity.bounds(ent);
 
   // Final amounts of movement to allow
@@ -17,11 +18,13 @@ export const wallSlide = (ent: Entity, map: TileMap, x = 0, y = 0) => {
 
     // Hit your head
     if (y < 0 && !(tl && tr)) {
-      yo = 0;
+      tileEdge = tiles[0].pos.y + tiles[0].h;
+      yo = tileEdge - bounds.y;
     }
     // Hit your feet
     if (y > 0 && !(bl && br)) {
-      yo = 0;
+      tileEdge = tiles[2].pos.y - 1;
+      yo = tileEdge - (bounds.y + bounds.h);
     }
   }
 
@@ -33,11 +36,13 @@ export const wallSlide = (ent: Entity, map: TileMap, x = 0, y = 0) => {
 
     // Hit left edge
     if (x < 0 && !(tl && bl)) {
-      xo = 0;
+      tileEdge = tiles[0].pos.x + tiles[0].w;
+      xo = tileEdge - bounds.x;
     }
     // Hit right edge
     if (x > 0 && !(tr && br)) {
-      xo = 0;
+      tileEdge = tiles[1].pos.x - 1;
+      xo = tileEdge - (bounds.x + bounds.w);
     }
   }
 
