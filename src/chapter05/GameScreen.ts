@@ -27,11 +27,9 @@ export class GameScreen extends Container {
 
     const bats = this.add(new Container());
     for (let i = 0; i < 5; i++) {
-      // this.randoBat(bats.add(new Bat(this.gameMap.findFreeSpot)));
-      this.randoBat(bats.add(new Bat()));
+      this.randoBat(bats.add(new Bat(map.findFreeSpot.bind(map))));
     }
     this.bats = bats;
-    console.log(this.bats);
 
     this.updateBehaviour = new GameBehaviour();
 
