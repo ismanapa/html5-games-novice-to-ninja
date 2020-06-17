@@ -7,6 +7,7 @@ import { Player } from './entities/Player';
 import { Pickup } from './entities/Pickup';
 import { Bat } from './entities/Bat';
 import { Totem } from './entities/Totem';
+import { Ghost } from './entities/Ghost';
 
 enum GameState {
   READY,
@@ -24,6 +25,7 @@ export class GameScreen extends Container {
   state: State<GameState>;
   score: number;
   scoreText: Text;
+  ghost: Ghost;
 
   constructor(game: Game, controls: KeyControls, onGameOver: () => void) {
     super();
@@ -55,6 +57,13 @@ export class GameScreen extends Container {
       t.pos.x = x;
       t.pos.y = y;
     }
+
+    const ghost = this.add(new Ghost(player, map));
+    ghost.pos.x = 100;
+    ghost.pos.y = 100;
+    ghost.findPath();
+    this.ghost = ghost;
+
 
     this.updateBehaviour = new GameBehaviour();
 
@@ -126,13 +135,19 @@ class GameBehaviour extends ContainerUpdateBehaviour implements UpdateBehaviour 
   }
 
   updatePlaying(game: GameScreen) {
-    const { baddies, player, pickups, state } = game;
+    const { baddies, player, pickups, state, ghost } = game;
+
     baddies.map(baddie => {
       if (entity.hit(player, baddie)) {
         state.set(GameState.GAMEOVER);
         baddie.dead = true;
       }
     });
+
+    if (entity.hit(player, ghost)) {
+      player.gameOver = true;
+      state.set(GameState.GAMEOVER);
+    }
 
     // Collect pickup!
     entity.hits(player, pickups, p => {

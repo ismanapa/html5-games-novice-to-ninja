@@ -1,3 +1,4 @@
+import * as EasyStar from 'easystarjs';
 import { TileMap, Texture, math } from '~gamelib';
 
 import tiles from './res/images/bravedigger-tiles.png';
@@ -13,6 +14,8 @@ const tileIndexes = [
 ];
 
 export class Level extends TileMap {
+  path: EasyStar.js;
+
   constructor(w: number, h: number) {
     const tileSize = 48;
     const mapW = Math.floor(w / tileSize);
@@ -65,6 +68,25 @@ export class Level extends TileMap {
       tileSize,
       texture,
     );
+
+
+    // Translate the one-dimensional level into path-finder 2d array
+    const grid = [];
+    for (let i = 0; i < level.length; i += mapW) {
+      grid.push(level.slice(i, i + mapW));
+    }
+
+    // Create a path finding thing
+    // eslint-disable-next-line new-cap
+    const path = new EasyStar.js();
+    path.setGrid(grid);
+    // Get the walkable tile indexes
+    const walkables = tileIndexes
+      .map(({ walkable }, i) => (walkable ? i : -1))
+      .filter(i => i !== -1);
+    path.setAcceptableTiles(walkables);
+
+    this.path = path;
   }
 
   findFreeSpot(isFree = true) {
