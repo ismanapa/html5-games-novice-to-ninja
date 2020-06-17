@@ -12,6 +12,7 @@ export class Player extends TileSprite {
   controls: KeyControls;
   speed: number;
   map: Level;
+  gameOver: boolean;
 
   constructor(controls: KeyControls, map: Level) {
     super(texture, 48, 48);
@@ -25,6 +26,7 @@ export class Player extends TileSprite {
       w: 28,
       h: 38,
     };
+    this.gameOver = false;
 
     this.updateBehaviour = new PlayerBehaviour();
   }

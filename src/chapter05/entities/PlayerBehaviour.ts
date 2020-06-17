@@ -3,7 +3,16 @@ import { Player } from './Player';
 
 export class PlayerBehaviour implements UpdateBehaviour {
   update(dt: number, t: number, entity: Player): void {
-    const { pos, controls, speed } = entity;
+    const {
+      pos, controls, speed, gameOver,
+    } = entity;
+
+    if (gameOver) {
+      entity.rotation += dt * 5;
+      entity.pivot.y = 16;
+      entity.pivot.x = 16;
+      return;
+    }
 
     const { x, y } = controls;
     const xo = x * dt * speed;
@@ -17,20 +26,17 @@ export class PlayerBehaviour implements UpdateBehaviour {
     pos.y += r.y;
 
     // Animate!
-    if (xo || yo) {
-      // Walking frames
+    if (r.x || r.y) {
       entity.frame.x = ((t / 0.08) | 0) % 4;
-      // Walking left or right?
-      if (xo < 0) {
+      if (r.x < 0) {
         entity.scale.x = -1;
         entity.anchor.x = 48;
       }
-      if (xo > 0) {
+      if (r.x > 0) {
         entity.scale.x = 1;
         entity.anchor.x = 0;
       }
     } else {
-      // Just hanging out
       entity.frame.x = ((t / 0.2) | 0) % 2 + 4;
     }
   }

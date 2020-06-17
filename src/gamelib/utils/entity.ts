@@ -70,6 +70,8 @@ const hits = (entity: Entity, container: Container, hitCallback: (e: Entity) => 
   });
 };
 
+const angle = (a: Entity, b: Entity) => math.angle(center(a), center(b));
+
 export const entity = {
   center,
   distance,
@@ -77,4 +79,5 @@ export const entity = {
   hit,
   hits,
   addDebug,
+  angle,
 };

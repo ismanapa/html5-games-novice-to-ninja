@@ -22,6 +22,14 @@ const distance = (a: Coordinates, b: Coordinates): number => {
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(x, max));
 
+const angle = (a: Coordinates, b: Coordinates) => {
+  const dx = a.x - b.x;
+  const dy = a.y - b.y;
+  const angle = Math.atan2(dy, dx);
+
+  return angle;
+};
+
 export const math = {
   randf,
   rand,
@@ -29,4 +37,5 @@ export const math = {
   randOneIn,
   distance,
   clamp,
+  angle,
 };

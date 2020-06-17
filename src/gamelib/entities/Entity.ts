@@ -12,6 +12,10 @@ export abstract class Entity {
   w: number;
   h: number;
   hitBox: HitBox;
+  rotation: number;
+  pivot: Coordinates;
+  anchor: Coordinates;
+  scale: Coordinates;
 
   constructor() {
     this.pos = { x: 0, y: 0 };
