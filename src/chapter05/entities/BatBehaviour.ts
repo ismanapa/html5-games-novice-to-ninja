@@ -1,31 +1,58 @@
-import { UpdateBehaviour } from '~gamelib';
+import { UpdateBehaviour, entity, math } from '~gamelib';
 
-import { Bat } from './Bat';
+import { Bat, BatStates } from './Bat';
 
 export class BatBehaviour implements UpdateBehaviour {
-  update(dt: number, t: number, entity: Bat): void {
-    const { pos, speed, waypoint } = entity;
+  update(dt: number, t: number, bat: Bat): void {
+    const {
+      pos, frame, speed, target, waypoint, state,
+    } = bat;
 
-    // Move in the direction of the path
-    const xo = waypoint.x - pos.x + 4;
-    const yo = waypoint.y - pos.y - 1;
+    const angle = entity.angle(target, bat);
+    const distance = entity.distance(target, bat);
+    let xo = 0;
+    let yo = 0;
+    let waypointAngle;
+    let waypointDistance;
 
-    const step = speed * dt;
-    const xIsClose = Math.abs(xo) <= step;
-    const yIsClose = Math.abs(yo) <= step;
+    switch (state.get()) {
+      case BatStates.ATTACK:
+        xo = Math.cos(angle) * speed * dt;
+        yo = Math.sin(angle) * speed * dt;
+        if (distance < 60) {
+          state.set(BatStates.EVADE);
+        }
+        break;
+      case BatStates.EVADE:
+        xo = -Math.cos(angle) * speed * dt;
+        yo = -Math.sin(angle) * speed * dt;
+        if (distance > 120) {
+          if (math.randOneIn(2)) {
+            state.set(BatStates.WANDER);
+            bat.waypoint = {
+              x: pos.x + math.rand(-200, 200),
+              y: pos.y + math.rand(-200, 200),
+            };
+          } else {
+            state.set(BatStates.ATTACK);
+          }
+        }
+        break;
+      case BatStates.WANDER:
+        waypointAngle = math.angle(waypoint, pos);
+        waypointDistance = math.distance(pos, waypoint);
 
-    if (!xIsClose) {
-      pos.x += speed * (xo > 0 ? 1 : -1) * dt;
+        xo = Math.cos(waypointAngle) * speed * dt;
+        yo = Math.sin(waypointAngle) * speed * dt;
+        if (waypointDistance < 60) {
+          state.set(BatStates.EVADE);
+        }
+        break;
     }
-    if (!yIsClose) {
-      pos.y += speed * (yo > 0 ? 1 : -1) * dt;
-    }
+    pos.x += xo;
+    pos.y += yo;
 
-    if (xIsClose && yIsClose) {
-      // New way point
-      entity.waypoint = entity.findWaypoint();
-    }
-
-    entity.frame.x = ((t / 0.1) | 0) % 2 + 3;
+    frame.x = ((t / 0.1) | 0) % 2 + 3;
+    state.update(dt);
   }
 }

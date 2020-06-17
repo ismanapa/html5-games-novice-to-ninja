@@ -1,5 +1,5 @@
 import {
-  Container, Game, KeyControls, UpdateBehaviour, ContainerUpdateBehaviour, entity, math,
+  Container, Game, KeyControls, UpdateBehaviour, ContainerUpdateBehaviour, entity, math, State, Text,
 } from '~gamelib';
 
 import { Level } from './Level';
@@ -8,6 +8,12 @@ import { Pickup } from './entities/Pickup';
 import { Bat } from './entities/Bat';
 import { Totem } from './entities/Totem';
 
+enum GameState {
+  READY,
+  PLAYING,
+  GAMEOVER
+}
+
 export class GameScreen extends Container {
   gameMap: Level;
   player: Player;
@@ -15,6 +21,9 @@ export class GameScreen extends Container {
   baddies: Container;
   controls: KeyControls;
   onGameOver: () => void;
+  state: State<GameState>;
+  score: number;
+  scoreText: Text;
 
   constructor(game: Game, controls: KeyControls, onGameOver: () => void) {
     super();
@@ -25,6 +34,9 @@ export class GameScreen extends Container {
     const map = new Level(game.w, game.h);
     const player = new Player(controls, map);
     player.pos = map.findFreeSpot();
+    player.pos.y -= 1;
+
+    this.state = new State(GameState.READY);
 
     this.gameMap = this.add(map);
     this.pickups = this.add(new Container());
@@ -32,7 +44,7 @@ export class GameScreen extends Container {
 
     const baddies = this.add(new Container());
     for (let i = 0; i < 5; i++) {
-      this.randoBat(baddies.add(new Bat(map.findFreeSpot.bind(map))));
+      this.randoBat(baddies.add(new Bat(player)));
     }
     this.baddies = baddies;
 
@@ -47,6 +59,15 @@ export class GameScreen extends Container {
     this.updateBehaviour = new GameBehaviour();
 
     this.populate();
+    this.score = 0;
+    this.scoreText = this.add(
+      new Text('0', {
+        font: "40pt 'Luckiest Guy', san-serif",
+        fill: '#fff',
+        align: 'center',
+      }),
+    );
+    this.scoreText.pos = { x: game.w / 2, y: game.h / 2 - 40 };
   }
 
   populate() {
@@ -67,29 +88,62 @@ export class GameScreen extends Container {
 
 class GameBehaviour extends ContainerUpdateBehaviour implements UpdateBehaviour {
   update(dt: number, t: number, game: GameScreen): void {
-    super.update(dt, t, game);
-
     const {
-      controls, baddies, player, pickups,
+      controls, baddies, player, pickups, state,
     } = game;
 
-    baddies.map(b => {
-      if (entity.hit(player, b)) {
-        player.gameOver = true;
+    switch (state.get()) {
+      case GameState.READY:
+        if (state.first) {
+          game.scoreText.text = 'GET READY';
+        }
+        if (state.time > 2) {
+          game.scoreText.text = '0';
+          state.set(GameState.PLAYING);
+        }
+        break;
+
+      case GameState.PLAYING:
+        super.update(dt, t, game);
+        this.updatePlaying(game);
+        break;
+
+      case GameState.GAMEOVER:
+        if (state.first) {
+          player.gameOver = true;
+          game.scoreText.text = `DEAD. Score: ${game.score}`;
+        }
+        super.update(dt, t, game);
+
+        // If player dead, wait for space bar
+        if (player.gameOver && controls.action) {
+          game.onGameOver();
+        }
+        break;
+    }
+
+    state.update(dt);
+  }
+
+  updatePlaying(game: GameScreen) {
+    const { baddies, player, pickups, state } = game;
+    baddies.map(baddie => {
+      if (entity.hit(player, baddie)) {
+        state.set(GameState.GAMEOVER);
+        baddie.dead = true;
       }
     });
-
-    // If player dead, wait for space bar
-    if (player.gameOver && controls.action) {
-      game.onGameOver();
-    }
 
     // Collect pickup!
     entity.hits(player, pickups, p => {
       p.dead = true;
+      game.score++;
       if (pickups.children.length === 1) {
         game.populate();
+        game.score += 5;
       }
+      game.scoreText.text = game.score.toString();
     });
   }
+}
 }

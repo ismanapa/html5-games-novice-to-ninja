@@ -4,16 +4,25 @@ import {
 
 import tiles from '../res/images/bravedigger-tiles.png';
 import { BatBehaviour } from './BatBehaviour';
+import { State } from '~gamelib/State';
+import { Player } from './Player';
 
 const texture = new Texture(tiles);
 
+export enum BatStates {
+  ATTACK,
+  EVADE,
+  WANDER
+}
+
 export class Bat extends TileSprite {
-  findWaypoint: () => Coordinates;
   waypoint: Coordinates;
   speed: number;
   dir: { x: number; y: number; };
+  state: State<BatStates>;
+  target: Player;
 
-  constructor(findWaypoint: () => Coordinates) {
+  constructor(target: Player) {
     super(texture, 48, 48);
     this.hitBox = {
       x: 6,
@@ -28,9 +37,10 @@ export class Bat extends TileSprite {
       y: 0,
     };
     this.speed = math.rand(180, 300);
-    this.findWaypoint = findWaypoint;
-    this.waypoint = findWaypoint();
+    this.target = target;
+    this.waypoint = null;
 
+    this.state = new State(BatStates.ATTACK);
     this.updateBehaviour = new BatBehaviour();
   }
 }
