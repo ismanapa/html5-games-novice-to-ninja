@@ -82,13 +82,15 @@ export class GameScreen extends Container {
       }),
     );
     this.scoreText.pos = { x: game.w / 2, y: game.h / 2 - 40 };
+
+    this.updateBehaviour = new GameBehaviour();
   }
 
   populate() {
     const { pickups, gameMap } = this;
     for (let i = 0; i < 5; i++) {
       const p = pickups.add(new Pickup());
-      p.pos = gameMap.findFreeSpot();
+      p.pos = gameMap.findTreasureSpot();
     }
   }
 
@@ -140,14 +142,10 @@ class GameBehaviour extends ContainerUpdateBehaviour implements UpdateBehaviour 
   }
 
   updatePlaying(game: GameScreen) {
-    const {
-      baddies, player, pickups, state,
-    } = game;
-
-    baddies.map(baddie => {
-      if (entity.hit(player, baddie)) {
+    const { bats, player, pickups, state } = game;
+    bats.map(bat => {
+      if (entity.hit(player, bat)) {
         state.set(GameState.GAMEOVER);
-        baddie.dead = true;
       }
     });
 
@@ -162,4 +160,5 @@ class GameBehaviour extends ContainerUpdateBehaviour implements UpdateBehaviour 
       game.scoreText.text = game.score.toString();
     });
   }
+}
 }

@@ -28,7 +28,7 @@ export class Player extends TileSprite {
     };
     this.frame.x = 4;
     this.speed = 250;
-    this.jumping = true;
+    this.jumping = false;
     this.vel = 0;
 
     this.updateBehaviour = new PlayerBehaviour();

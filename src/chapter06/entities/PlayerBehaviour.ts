@@ -29,7 +29,6 @@ export class PlayerBehaviour implements UpdateBehaviour {
     }
 
     const r = wallSlide(entity, map, xo, yo);
-
     if (r.hits.down) {
       entity.jumping = false;
       entity.vel = 0;
@@ -48,15 +47,19 @@ export class PlayerBehaviour implements UpdateBehaviour {
     pos.y += r.y;
 
     // Animations
-    if (x && !entity.jumping) {
-      entity.frame.x = ((t / 0.1) | 0) % 4;
-      if (x > 0) {
-        entity.anchor.x = 0;
-        entity.scale.x = 1;
-      } else if (x < 0) {
-        entity.anchor.x = entity.w;
-        entity.scale.x = -1;
+    if (r.x || r.y) {
+      if (x && !entity.jumping) {
+        entity.frame.x = ((t / 0.1) | 0) % 4;
+        if (x > 0) {
+          entity.anchor.x = 0;
+          entity.scale.x = 1;
+        } else if (x < 0) {
+          entity.anchor.x = entity.w;
+          entity.scale.x = -1;
+        }
       }
+    } else {
+      entity.frame.x = ((t / 0.2) | 0) % 2 + 4;
     }
   }
 }

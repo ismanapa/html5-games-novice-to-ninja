@@ -131,4 +131,21 @@ export class Level extends TileMap {
     }
     return this.mapToPixelPos({ x, y });
   }
+
+  findTreasureSpot() {
+    const { mapW, mapH } = this;
+    let found = false;
+    let x;
+    let y;
+    while (!found) {
+      x = math.rand(mapW);
+      y = math.rand(mapH);
+      const { frame, pos } = this.tileAtMapPos({ x, y });
+      const underFrame = this.tileAtMapPos({ x, y: y + 1 });
+      if (frame.walkable && underFrame && !underFrame.frame.walkable) {
+        found = true;
+      }
+    }
+    return this.mapToPixelPos({ x, y });
+  }
 }
