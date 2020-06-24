@@ -4,6 +4,8 @@ import { CanvasRenderer } from './renderer/CanvasRenderer';
 type GameUpdateFunc = (dt: number, t: number) => void;
 const STEP = 1 / 60;
 const MAX_FRAME = STEP * 5;
+const MULTIPLIER = 1;
+const SPEED = STEP * MULTIPLIER;
 
 export class Game {
   w: number;
@@ -28,13 +30,22 @@ export class Game {
       requestAnimationFrame(loopy);
 
       const t = ms / 1000; // Let's work in seconds
-      dt = Math.min(t - last, MAX_FRAME);
+      dt += Math.min(t - last, MAX_FRAME);
       last = t;
 
-      this.scene.update(dt, t);
-      gameUpdate(dt, t);
+      while (dt >= SPEED) {
+        this.scene.update(STEP, t / MULTIPLIER);
+        gameUpdate(STEP, t / MULTIPLIER);
+        dt -= SPEED;
+      }
       this.renderer.render(this.scene);
     };
-    requestAnimationFrame(loopy);
+
+    const init = (ms: number): void => {
+      last = ms / 1000;
+      requestAnimationFrame(loopy);
+    };
+
+    requestAnimationFrame(init);
   }
 }
