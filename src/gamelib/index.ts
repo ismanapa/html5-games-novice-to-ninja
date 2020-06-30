@@ -17,3 +17,4 @@ export * from './entities/Camera';
 export * from './movement/deadInTracks';
 export * from './movement/wallSlide';
 export * from './State';
+export * from './utils/Vec';

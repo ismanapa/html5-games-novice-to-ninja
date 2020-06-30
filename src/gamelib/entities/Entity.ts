@@ -1,9 +1,10 @@
 import { Coordinates, HitBox } from '~gamelib/types';
 import { UpdateBehaviour } from '~gamelib/behaviours/UpdateBehaviour';
 import { EntityType } from './EntityTypeEnum';
+import { Vec } from '../utils/Vec';
 
 export abstract class Entity {
-  pos: Coordinates;
+  pos: Vec;
   label: string;
   updateBehaviour: UpdateBehaviour;
   visible: boolean;
@@ -18,7 +19,7 @@ export abstract class Entity {
   scale: Coordinates;
 
   constructor() {
-    this.pos = { x: 0, y: 0 };
+    this.pos = new Vec();
     this.visible = true;
   }
 
