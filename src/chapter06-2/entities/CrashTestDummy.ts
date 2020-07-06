@@ -23,11 +23,11 @@ class CrashTestDummyBehaviour implements UpdateBehaviour {
     const { pos, vel } = entity;
 
     // Move in the direction of the path
-    pos.x += vel.x * dt;
-    pos.y += vel.y * dt;
+    // pos.x += vel.x * dt;
+    // pos.y += vel.y * dt;
 
     // Or...
-    // pos.add(vel.clone().multiply(dt));
+    pos.add(vel.clone().multiply(dt));
 
     entity.rotation += 5 * dt;
   }

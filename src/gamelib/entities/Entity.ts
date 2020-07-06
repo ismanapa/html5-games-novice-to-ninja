@@ -17,6 +17,9 @@ export abstract class Entity {
   pivot: Coordinates;
   anchor: Coordinates;
   scale: Coordinates;
+  acc: Vec;
+  mass: number;
+  vel: Vec;
 
   constructor() {
     this.pos = new Vec();
@@ -29,7 +32,7 @@ export abstract class Entity {
     }
   }
 
-  setPos(pos: Coordinates) {
+  setPos(pos: Vec) {
     this.pos = pos;
   }
 
