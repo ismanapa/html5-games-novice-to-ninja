@@ -1,6 +1,6 @@
 import {
   Container, Game, KeyControls, UpdateBehaviour,
-  ContainerUpdateBehaviour, entity, math, State, Text, Camera,
+  ContainerUpdateBehaviour, entity, math, State, Text, Camera, Vec,
 } from '~gamelib';
 
 import { Level } from './Level';
@@ -81,7 +81,7 @@ export class GameScreen extends Container {
         align: 'center',
       }),
     );
-    this.scoreText.pos = { x: game.w / 2, y: game.h / 2 - 40 };
+    this.scoreText.pos = { x: game.w / 2, y: game.h / 2 - 40 } as Vec;
 
     this.updateBehaviour = new GameBehaviour();
   }
@@ -90,7 +90,7 @@ export class GameScreen extends Container {
     const { pickups, gameMap } = this;
     for (let i = 0; i < 5; i++) {
       const p = pickups.add(new Pickup());
-      p.pos = gameMap.findTreasureSpot();
+      p.pos = gameMap.findTreasureSpot() as Vec;
     }
   }
 
@@ -142,7 +142,9 @@ class GameBehaviour extends ContainerUpdateBehaviour implements UpdateBehaviour 
   }
 
   updatePlaying(game: GameScreen) {
-    const { bats, player, pickups, state } = game;
+    const {
+      bats, player, pickups, state,
+    } = game;
     bats.map(bat => {
       if (entity.hit(player, bat)) {
         state.set(GameState.GAMEOVER);
@@ -160,5 +162,4 @@ class GameBehaviour extends ContainerUpdateBehaviour implements UpdateBehaviour 
       game.scoreText.text = game.score.toString();
     });
   }
-}
 }
