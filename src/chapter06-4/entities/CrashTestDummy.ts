@@ -41,7 +41,7 @@ class CrashTestDummyBehaviour implements UpdateBehaviour {
 
     physics.applyForce(entity, { x: 500, y: 0 } as Vec);
 
-    physics.integrate(entity, dt);
+    entity.pos.add(physics.integrate(entity, dt));
 
     // Bounce off the walls
     if (pos.x < 0 || pos.x > bounds.w) {

@@ -4,10 +4,11 @@ import { Entity } from './Entity';
 import { Sprite } from './Sprite';
 import { math } from '../utils/math';
 import { CameraBehaviour } from '../behaviours/CameraBehaviour';
+import { Vec } from '../utils/Vec';
 
 export class Camera extends Container {
   worldSize: Dimensions;
-  subject: Coordinates;
+  subject: Coordinates | Vec;
   offset: Coordinates;
 
   constructor(
