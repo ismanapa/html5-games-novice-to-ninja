@@ -35,9 +35,21 @@ export class Vec {
     return this;
   }
 
+  subtract({ x, y }: Vec) {
+    this.x -= x;
+    this.y -= y;
+    return this;
+  }
+
   multiply(s: number) {
     this.x *= s;
     this.y *= s;
+    return this;
+  }
+
+  divide(s: number) {
+    this.x /= s;
+    this.y /= s;
     return this;
   }
 

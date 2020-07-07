@@ -36,12 +36,19 @@ const integrate = (e: Entity, dt: number) => {
   return { x, y } as Vec;
 };
 
+const integratePos = (e: Entity, dt: number) => {
+  const dis = integrate(e, dt);
+  e.pos.add(dis);
+  return dis;
+};
+
 const speed = ({ vel }: Entity) => Math.sqrt(vel.x * vel.x + vel.y * vel.y);
 
 export const physics = {
   applyForce,
   applyImpulse,
   integrate,
+  integratePos,
   speed,
   applyFriction,
   applyHorizontalFriction,
