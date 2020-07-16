@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/ismanapa/html5-games-novice-to-ninja#readme",
   "devDependencies": {
+    "@types/matter-js": "^0.14.4",
     "@typescript-eslint/eslint-plugin": "^2.32.0",
     "@typescript-eslint/parser": "^2.32.0",
     "eslint": "^7.0.0",
@@ -29,6 +30,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "easystarjs": "^0.4.3"
+    "easystarjs": "^0.4.3",
+    "matter-js": "^0.14.2"
   }
 }

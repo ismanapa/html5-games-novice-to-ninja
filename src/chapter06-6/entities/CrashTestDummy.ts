@@ -39,7 +39,7 @@ class CrashTestDummyBehaviour implements UpdateBehaviour {
         entity,
         {
           x: math.rand(-MAX_POWER, MAX_POWER),
-          y: math.rand(-MAX_POWER, MAX_POWER)
+          y: math.rand(-MAX_POWER, MAX_POWER),
         } as Vec,
         dt,
       );

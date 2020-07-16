@@ -14,7 +14,7 @@ export abstract class Entity {
   h: number;
   hitBox: HitBox;
   rotation: number;
-  pivot: Coordinates;
+  pivot: Coordinates | Vec;
   anchor: Coordinates;
   scale: Coordinates;
   acc: Vec;
