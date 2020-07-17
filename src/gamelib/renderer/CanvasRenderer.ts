@@ -5,6 +5,7 @@ import {
   EntityCanvasRenderer,
   TileSpriteCanvasRenderer,
   RectCanvasRenderer,
+  ContainerRenderer,
 } from './EntityRenderes';
 
 export class CanvasRenderer {
@@ -30,6 +31,7 @@ export class CanvasRenderer {
       new SpriteCanvasRenderer(),
       new TileSpriteCanvasRenderer(),
       new RectCanvasRenderer(),
+      new ContainerRenderer(),
     ];
   }
 

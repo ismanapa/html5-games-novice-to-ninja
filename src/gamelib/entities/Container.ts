@@ -1,9 +1,12 @@
 import { Entity } from '~gamelib/entities/Entity';
 import { ContainerUpdateBehaviour } from '~gamelib/behaviours/ContainerUpdateBehaviour';
 import { EntityType } from './EntityTypeEnum';
+import { Coordinates } from '~gamelib/types';
 
 export class Container extends Entity {
   children: Entity[];
+  path: Coordinates[];
+  style: { [key: string]: any };
 
   constructor() {
     super();

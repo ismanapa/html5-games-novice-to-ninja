@@ -1,11 +1,12 @@
 import { Coordinates } from '~gamelib/types';
 
+let { random } = Math;
 const randf = (min: number, max: number = null) => {
   if (max == null) {
     max = min || 1;
     min = 0;
   }
-  return Math.random() * (max - min) + min;
+  return random() * (max - min) + min;
 };
 
 const rand = (min: number, max: number = null) => Math.floor(randf(min, max));
@@ -30,6 +31,26 @@ const angle = (a: Coordinates, b: Coordinates) => {
   return angle;
 };
 
+
+let seed = 42;
+const randomSeed = (s: number = NaN) => {
+  if (!isNaN(s)) {
+    seed = s;
+  }
+  return seed;
+};
+
+const randomSeeded = () => {
+  // https://en.wikipedia.org/wiki/Linear_congruential_generator
+  seed = (seed * 16807 + 0) % 2147483647;
+  return seed / 2147483647;
+};
+
+const useSeededRandom = (blnUse = true) => {
+  randomSeeded();
+  random = blnUse ? randomSeeded : Math.random;
+};
+
 export const math = {
   randf,
   rand,
@@ -38,4 +59,7 @@ export const math = {
   distance,
   clamp,
   angle,
+  useSeededRandom,
+  randomSeed,
+  randomSeeded,
 };
