@@ -20,3 +20,7 @@ export * from './movement/wallSlide';
 export * from './State';
 export * from './utils/Vec';
 export * from './utils/physics';
+export * from './sounds/Sound';
+export * from './sounds/SoundPool';
+export * from './sounds/SoungGroup';
+export * from './Assets';
